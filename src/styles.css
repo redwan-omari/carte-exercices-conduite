@@ -183,12 +183,24 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
 .fab.locate { right: 12px; bottom: calc(84px + var(--safe-bottom)); width: 50px; height: 50px; border-radius: 50%; background: #fff; font-size: 1.5rem; color: var(--muted); }
 .fab.locate.on { color: var(--primary); }
 /* Bouton Satellite / Plan, à gauche du bouton de position */
+.basemap-ctl { position: absolute; z-index: 600; right: 72px; bottom: calc(84px + var(--safe-bottom)); }
 .fab.basemap {
-  right: 72px; bottom: calc(84px + var(--safe-bottom)); width: 50px; height: 50px; border-radius: 14px; background: #fff;
+  position: relative; width: 50px; height: 50px; border-radius: 14px; background: #fff;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0; color: var(--ink);
 }
 .fab.basemap span { font-size: 1.25rem; line-height: 1; }
 .fab.basemap small { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.01em; }
+.fab.basemap[aria-expanded='true'] { outline: 2px solid var(--primary); }
+.basemap-menu {
+  position: absolute; right: 0; bottom: 58px; display: grid; gap: 2px; padding: 4px; min-width: 175px;
+  background: #fff; border-radius: 12px; box-shadow: var(--shadow);
+}
+.basemap-menu button {
+  display: flex; align-items: center; gap: 0.6rem; border: 0; background: transparent; padding: 0.65rem 0.7rem;
+  border-radius: 9px; font-size: 0.95rem; text-align: left; cursor: pointer; white-space: nowrap;
+}
+.basemap-menu button span { font-size: 1.15rem; }
+.basemap-menu button.active { background: #eff6ff; color: var(--primary); font-weight: 700; }
 .fab.add {
   left: 50%; transform: translateX(-50%); bottom: calc(18px + var(--safe-bottom));
   background: var(--primary); color: #fff; border-radius: 999px; padding: 0 1.4rem; height: 54px; font-size: 1.05rem;

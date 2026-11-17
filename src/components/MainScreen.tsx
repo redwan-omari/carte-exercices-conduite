@@ -4,7 +4,7 @@ import type { Session } from '@supabase/supabase-js'
 import { useSpots } from '../hooks/useSpots'
 import { useGeolocation } from '../hooks/useGeolocation'
 import { getCategory } from '../lib/categories'
-import { DEFAULT_BASEMAP, getBasemap, otherBasemap } from '../lib/basemaps'
+import { DEFAULT_BASEMAP, getBasemap } from '../lib/basemaps'
 import type { LatLng, Role, Spot } from '../lib/types'
 import MapView from './MapView'
 import Sidebar, { type DisplayPrefs } from './Sidebar'
@@ -14,6 +14,7 @@ import SpotList from './SpotList'
 import AccountPanel from './AccountPanel'
 import MembersPage from './MembersPage'
 import GeoHelp from './GeoHelp'
+import BasemapButton from './BasemapButton'
 import { fetchPendingCount } from '../lib/api'
 import { Toast, useToast } from './Toast'
 
@@ -56,7 +57,6 @@ export default function MainScreen({ session, role }: Props) {
   const mapRef = useRef<L.Map | null>(null)
   const [view, setView] = useState<'map' | 'list'>('map')
   const [prefs, setPrefs] = useState<DisplayPrefs>(loadPrefs)
-  const nextBasemap = otherBasemap(prefs.basemap)
   const [sidebarOpen, setSidebarOpen] = useState(isWide)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [panel, setPanel] = useState<'account' | 'members' | null>(null)
@@ -291,15 +291,7 @@ export default function MainScreen({ session, role }: Props) {
 
             {view === 'map' && (
               <>
-                <button
-                  className="fab basemap"
-                  onClick={() => setPrefs({ ...prefs, basemap: nextBasemap.id })}
-                  aria-label={`Afficher la vue ${nextBasemap.label}`}
-                  title={`Vue ${nextBasemap.label}`}
-                >
-                  <span aria-hidden>{nextBasemap.emoji}</span>
-                  <small>{nextBasemap.label}</small>
-                </button>
+                <BasemapButton value={prefs.basemap} onChange={(basemap) => setPrefs({ ...prefs, basemap })} />
                 <button className={`fab locate ${geo.active ? 'on' : ''}`} onClick={locate} aria-label="Me localiser">
                   ◎
                 </button>

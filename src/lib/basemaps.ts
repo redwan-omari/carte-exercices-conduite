@@ -1,8 +1,10 @@
 /**
- * Fonds de carte disponibles, gratuits et sans clé (Géoplateforme de l'IGN,
- * data.geopf.fr). Un bouton sur la carte passe de l'un à l'autre.
+ * Fonds de carte disponibles, tous gratuits et sans clé :
+ * - photos aériennes et plan IGN : Géoplateforme de l'IGN (data.geopf.fr) ;
+ * - plan OpenStreetMap.
+ * Un bouton sur la carte ouvre un petit menu pour choisir.
  */
-export type BasemapId = 'satellite' | 'plan-ign'
+export type BasemapId = 'satellite' | 'plan-ign' | 'osm'
 
 export interface Basemap {
   id: BasemapId
@@ -30,10 +32,18 @@ export const BASEMAPS: Basemap[] = [
   },
   {
     id: 'plan-ign',
-    label: 'Plan',
+    label: 'Plan IGN',
     emoji: '🗺️',
     url: `${IGN_WMTS}&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&FORMAT=image/png`,
     attribution: IGN_ATTRIBUTION,
+    maxNativeZoom: 19,
+  },
+  {
+    id: 'osm',
+    label: 'OpenStreetMap',
+    emoji: '🧭',
+    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxNativeZoom: 19,
   },
 ]
@@ -42,9 +52,4 @@ export const DEFAULT_BASEMAP: BasemapId = 'satellite'
 
 export function getBasemap(id: string | null | undefined): Basemap {
   return BASEMAPS.find((b) => b.id === id) ?? BASEMAPS.find((b) => b.id === DEFAULT_BASEMAP)!
-}
-
-/** Le fond proposé par le bouton de la carte (celui qui n'est pas affiché). */
-export function otherBasemap(id: BasemapId): Basemap {
-  return BASEMAPS.find((b) => b.id !== id) ?? getBasemap(DEFAULT_BASEMAP)
 }

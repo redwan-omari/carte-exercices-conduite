@@ -52,6 +52,16 @@ export default defineConfig(({ mode }) => ({
         clientsClaim: true,
         runtimeCaching: [
           {
+            // Tuiles OpenStreetMap : consultées récemment => disponibles hors ligne.
+            urlPattern: /^https:\/\/tile\.openstreetmap\.org\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'osm-tiles',
+              expiration: { maxEntries: 800, maxAgeSeconds: 60 * 60 * 24 * 14 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
             // Photos aériennes et plan IGN (Géoplateforme) : consultés récemment => disponibles hors ligne.
             urlPattern: /^https:\/\/data\.geopf\.fr\/wmts\?.*/i,
             handler: 'CacheFirst',
