@@ -4,7 +4,7 @@ Carte collaborative (PWA mobile) pour repérer les lieux d'exercices de conduite
 Chaque collègue se connecte avec son propre compte, ajoute un lieu avec le GPS de son téléphone (et des photos), et **les points apparaissent immédiatement chez tout le monde**.
 
 - **Adresse :** https://redwan-omari.github.io/carte-exercices-conduite/
-- **Frontend :** React + Vite + TypeScript + Leaflet (OpenStreetMap), installable en PWA, hébergé sur GitHub Pages (site statique)
+- **Frontend :** React + Vite + TypeScript + Leaflet (photos aériennes et plan IGN), installable en PWA, hébergé sur GitHub Pages (site statique)
 - **Backend :** Supabase (authentification, base Postgres + RLS, stockage des photos, temps réel)
 
 > Ce dépôt est **totalement indépendant** de `carte-poitiers` : dépôt séparé, workflow séparé, projet Supabase séparé. Rien ici ne touche à l'autre site.

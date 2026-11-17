@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { CATEGORIES, getCategory } from '../lib/categories'
-import { BASEMAPS, type BasemapId } from '../lib/basemaps'
+import type { BasemapId } from '../lib/basemaps'
 import type { Spot } from '../lib/types'
 
 export interface DisplayPrefs {
@@ -70,26 +70,6 @@ export default function Sidebar({ open, onClose, spots, prefs, onChange, view, o
             📋 Liste
           </button>
         </div>
-
-        <section>
-          <div className="sidebar-section-head">
-            <h3>Fond de carte</h3>
-          </div>
-          <div className="basemap-choice" role="radiogroup" aria-label="Fond de carte">
-            {BASEMAPS.map((b) => (
-              <label key={b.id} className={prefs.basemap === b.id ? 'active' : ''}>
-                <input
-                  type="radio"
-                  name="basemap"
-                  checked={prefs.basemap === b.id}
-                  onChange={() => onChange({ ...prefs, basemap: b.id })}
-                />
-                <span aria-hidden>{b.emoji}</span>
-                <span>{b.label}</span>
-              </label>
-            ))}
-          </div>
-        </section>
 
         <section>
           <div className="sidebar-section-head">

@@ -182,6 +182,13 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
 }
 .fab.locate { right: 12px; bottom: calc(84px + var(--safe-bottom)); width: 50px; height: 50px; border-radius: 50%; background: #fff; font-size: 1.5rem; color: var(--muted); }
 .fab.locate.on { color: var(--primary); }
+/* Bouton Satellite / Plan, à gauche du bouton de position */
+.fab.basemap {
+  right: 72px; bottom: calc(84px + var(--safe-bottom)); width: 50px; height: 50px; border-radius: 14px; background: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 0; color: var(--ink);
+}
+.fab.basemap span { font-size: 1.25rem; line-height: 1; }
+.fab.basemap small { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.01em; }
 .fab.add {
   left: 50%; transform: translateX(-50%); bottom: calc(18px + var(--safe-bottom));
   background: var(--primary); color: #fff; border-radius: 999px; padding: 0 1.4rem; height: 54px; font-size: 1.05rem;
@@ -400,12 +407,3 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
 .geo-help ol { margin: 0.3rem 0 0.6rem; padding-left: 1.3rem; line-height: 1.5; }
 .geo-help li { margin: 0.2rem 0; }
 .geo-help h3 { margin: 0.8rem 0 0.2rem; }
-
-/* ---------- Choix du fond de carte ---------- */
-.basemap-choice { display: grid; gap: 0.35rem; margin-top: 0.4rem; }
-.basemap-choice label {
-  display: flex; align-items: center; gap: 0.55rem; padding: 0.55rem 0.7rem; border: 1.5px solid var(--line);
-  border-radius: 10px; cursor: pointer; font-size: 0.95rem; background: #fff;
-}
-.basemap-choice label.active { border-color: var(--primary); background: #eff6ff; font-weight: 600; }
-.basemap-choice input { accent-color: var(--primary); margin: 0; }
