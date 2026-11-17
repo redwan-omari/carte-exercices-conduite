@@ -400,3 +400,12 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
 .geo-help ol { margin: 0.3rem 0 0.6rem; padding-left: 1.3rem; line-height: 1.5; }
 .geo-help li { margin: 0.2rem 0; }
 .geo-help h3 { margin: 0.8rem 0 0.2rem; }
+
+/* ---------- Choix du fond de carte ---------- */
+.basemap-choice { display: grid; gap: 0.35rem; margin-top: 0.4rem; }
+.basemap-choice label {
+  display: flex; align-items: center; gap: 0.55rem; padding: 0.55rem 0.7rem; border: 1.5px solid var(--line);
+  border-radius: 10px; cursor: pointer; font-size: 0.95rem; background: #fff;
+}
+.basemap-choice label.active { border-color: var(--primary); background: #eff6ff; font-weight: 600; }
+.basemap-choice input { accent-color: var(--primary); margin: 0; }

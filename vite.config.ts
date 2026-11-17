@@ -58,6 +58,16 @@ export default defineConfig(({ mode }) => ({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
+          {
+            // Photos aériennes et plan IGN (Géoplateforme) : idem.
+            urlPattern: /^https:\/\/data\.geopf\.fr\/wmts\?.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'ign-tiles',
+              expiration: { maxEntries: 1500, maxAgeSeconds: 60 * 60 * 24 * 14 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
           // Les appels Supabase (API, auth, realtime, photos) ne sont JAMAIS mis en cache.
         ],
       },

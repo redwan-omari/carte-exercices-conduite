@@ -4,6 +4,7 @@ import type { Session } from '@supabase/supabase-js'
 import { useSpots } from '../hooks/useSpots'
 import { useGeolocation } from '../hooks/useGeolocation'
 import { getCategory } from '../lib/categories'
+import { DEFAULT_BASEMAP, getBasemap } from '../lib/basemaps'
 import type { LatLng, Role, Spot } from '../lib/types'
 import MapView from './MapView'
 import Sidebar, { type DisplayPrefs } from './Sidebar'
@@ -31,11 +32,17 @@ const PREFS_KEY = 'carte-affichage-v1'
 function loadPrefs(): DisplayPrefs {
   try {
     const p = JSON.parse(localStorage.getItem(PREFS_KEY) ?? 'null')
-    if (p) return { hidden: new Set<string>(p.hidden ?? []), showCenter: p.showCenter !== false, showMe: p.showMe !== false }
+    if (p)
+      return {
+        hidden: new Set<string>(p.hidden ?? []),
+        showCenter: p.showCenter !== false,
+        showMe: p.showMe !== false,
+        basemap: getBasemap(p.basemap).id,
+      }
   } catch {
     /* stockage indisponible */
   }
-  return { hidden: new Set(), showCenter: true, showMe: true }
+  return { hidden: new Set(), showCenter: true, showMe: true, basemap: DEFAULT_BASEMAP }
 }
 const isWide = () => window.matchMedia('(min-width: 900px)').matches
 
@@ -69,7 +76,7 @@ export default function MainScreen({ session, role }: Props) {
 
   useEffect(() => {
     try {
-      localStorage.setItem(PREFS_KEY, JSON.stringify({ hidden: [...prefs.hidden], showCenter: prefs.showCenter, showMe: prefs.showMe }))
+      localStorage.setItem(PREFS_KEY, JSON.stringify({ hidden: [...prefs.hidden], showCenter: prefs.showCenter, showMe: prefs.showMe, basemap: prefs.basemap }))
     } catch {
       /* stockage indisponible */
     }
@@ -260,6 +267,7 @@ export default function MainScreen({ session, role }: Props) {
               onSelect={(id) => selectSpot(id)}
               userPos={prefs.showMe ? geo.pos : null}
               showCenter={prefs.showCenter}
+              basemap={prefs.basemap}
               draftPos={draftPos}
               onDraftMove={moveDraft}
               onMapClick={draft ? moveDraft : () => setSelectedId(null)}

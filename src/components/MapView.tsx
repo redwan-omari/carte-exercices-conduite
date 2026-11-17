@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react'
 import L from 'leaflet'
 import { Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { getCategory } from '../lib/categories'
+import { getBasemap, type BasemapId } from '../lib/basemaps'
 import { DEFAULT_CENTER, DEFAULT_ZOOM, TRAINING_CENTER, directionsUrl } from '../lib/geo'
 import type { GeoPos, LatLng, Spot } from '../lib/types'
 
@@ -65,13 +66,15 @@ interface Props {
   onSelect: (id: string) => void
   userPos: GeoPos | null
   showCenter: boolean
+  basemap: BasemapId
   draftPos: LatLng | null
   onDraftMove: (p: LatLng) => void
   onMapClick?: (p: LatLng) => void
   onReady: (map: L.Map) => void
 }
 
-export default function MapView({ spots, selectedId, onSelect, userPos, showCenter, draftPos, onDraftMove, onMapClick, onReady }: Props) {
+export default function MapView({ spots, selectedId, onSelect, userPos, showCenter, basemap, draftPos, onDraftMove, onMapClick, onReady }: Props) {
+  const tiles = getBasemap(basemap)
   const draftHandlers = useMemo(
     () => ({
       dragend(e: L.LeafletEvent) {
@@ -93,9 +96,11 @@ export default function MapView({ spots, selectedId, onSelect, userPos, showCent
       }}
     >
       <TileLayer
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        maxZoom={19}
+        key={tiles.id}
+        url={tiles.url}
+        attribution={tiles.attribution}
+        maxNativeZoom={tiles.maxNativeZoom}
+        maxZoom={20}
       />
       <AutoResize />
       <ClickHandler onClick={onMapClick} />
