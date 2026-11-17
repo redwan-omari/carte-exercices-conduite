@@ -21,7 +21,8 @@ export default defineConfig(({ mode }) => ({
     mode === 'phone' && basicSsl({ name: 'carte-exercices-conduite-dev' }),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      // Enregistrement fait par src/lib/pwa.ts (rechargement auto, sauf pendant une saisie).
+      injectRegister: false,
       includeAssets: ['favicon.ico', 'favicon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
         id: BASE,
@@ -47,6 +48,8 @@ export default defineConfig(({ mode }) => ({
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
         navigateFallback: `${BASE}index.html`,
         cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
             // Photos aériennes et plan IGN (Géoplateforme) : consultés récemment => disponibles hors ligne.

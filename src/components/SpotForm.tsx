@@ -73,7 +73,7 @@ export default function SpotForm({ mode, spot, userId, draftPos, followGps, gpsP
   const accClass = acc == null ? '' : acc <= 15 ? 'good' : acc <= 50 ? 'medium' : 'bad'
 
   return (
-    <section className="sheet" aria-label={mode === 'create' ? 'Nouveau lieu' : 'Modifier le lieu'}>
+    <section className="sheet" data-unsaved aria-label={mode === 'create' ? 'Nouveau lieu' : 'Modifier le lieu'}>
       <form onSubmit={submit}>
         <div className="sheet-head">
           <h2>{mode === 'create' ? 'Nouveau lieu' : 'Modifier le lieu'}</h2>
