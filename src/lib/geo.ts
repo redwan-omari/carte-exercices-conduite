@@ -43,12 +43,37 @@ export function geoErrorMessage(err: GeolocationPositionError): string {
   }
 }
 
-/** Lien d'itinéraire : Apple Plans sur iPhone/iPad, Google Maps ailleurs. */
-export function directionsUrl(p: LatLng): string {
-  const isApple = /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document
-  return isApple
-    ? `https://maps.apple.com/?daddr=${p.lat},${p.lng}&dirflg=d`
-    : `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&travelmode=driving`
+export interface DirectionsApp {
+  id: 'apple' | 'google' | 'waze'
+  label: string
+  emoji: string
+  url: string
+}
+
+/** iPhone / iPad (iPadOS se présente comme un Mac tactile). */
+export function isAppleDevice(): boolean {
+  return /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && 'ontouchend' in document)
+}
+
+/**
+ * Applis de guidage proposées pour aller à un point (liens gratuits, sans clé :
+ * ils ouvrent l'appli si elle est installée, sinon le site web).
+ * Plans n'est proposé que sur iPhone / iPad.
+ */
+export function directionsApps(p: LatLng): DirectionsApp[] {
+  const apps: DirectionsApp[] = [
+    {
+      id: 'google',
+      label: 'Google Maps',
+      emoji: '📍',
+      url: `https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}&travelmode=driving`,
+    },
+    { id: 'waze', label: 'Waze', emoji: '🚙', url: `https://waze.com/ul?ll=${p.lat},${p.lng}&navigate=yes` },
+  ]
+  if (isAppleDevice()) {
+    apps.unshift({ id: 'apple', label: 'Plans (Apple)', emoji: '🗺️', url: `https://maps.apple.com/?daddr=${p.lat},${p.lng}&dirflg=d` })
+  }
+  return apps
 }
 
 export function formatCoords(p: LatLng): string {

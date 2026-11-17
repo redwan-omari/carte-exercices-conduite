@@ -3,7 +3,10 @@ import L from 'leaflet'
 import { Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { getCategory } from '../lib/categories'
 import { getBasemap, type BasemapId } from '../lib/basemaps'
-import { DEFAULT_CENTER, DEFAULT_ZOOM, TRAINING_CENTER, directionsUrl } from '../lib/geo'
+import { DEFAULT_CENTER, DEFAULT_ZOOM, TRAINING_CENTER } from '../lib/geo'
+import DirectionsButton from './DirectionsButton'
+import DrawLayer from './DrawLayer'
+import type { Stroke } from '../hooks/useDrawings'
 import type { GeoPos, LatLng, Spot } from '../lib/types'
 
 const iconCache = new Map<string, L.DivIcon>()
@@ -71,9 +74,28 @@ interface Props {
   onDraftMove: (p: LatLng) => void
   onMapClick?: (p: LatLng) => void
   onReady: (map: L.Map) => void
+  drawing: boolean
+  strokes: Stroke[]
+  drawColor: string
+  onStroke: (points: [number, number][]) => void
 }
 
-export default function MapView({ spots, selectedId, onSelect, userPos, showCenter, basemap, draftPos, onDraftMove, onMapClick, onReady }: Props) {
+export default function MapView({
+  spots,
+  selectedId,
+  onSelect,
+  userPos,
+  showCenter,
+  basemap,
+  draftPos,
+  onDraftMove,
+  onMapClick,
+  onReady,
+  drawing,
+  strokes,
+  drawColor,
+  onStroke,
+}: Props) {
   const tiles = getBasemap(basemap)
   const draftHandlers = useMemo(
     () => ({
@@ -104,6 +126,7 @@ export default function MapView({ spots, selectedId, onSelect, userPos, showCent
       />
       <AutoResize />
       <ClickHandler onClick={onMapClick} />
+      <DrawLayer active={drawing} strokes={strokes} color={drawColor} onStroke={onStroke} />
 
       {showCenter && (
       <Marker position={[TRAINING_CENTER.lat, TRAINING_CENTER.lng]} icon={centerIcon} zIndexOffset={-100} title={TRAINING_CENTER.name}>
@@ -111,9 +134,7 @@ export default function MapView({ spots, selectedId, onSelect, userPos, showCent
           <div className="center-popup">
             <strong>{TRAINING_CENTER.name}</strong>
             <span>{TRAINING_CENTER.address}</span>
-            <a href={directionsUrl(TRAINING_CENTER)} target="_blank" rel="noopener noreferrer">
-              🧭 Itinéraire
-            </a>
+            <DirectionsButton to={TRAINING_CENTER} name={TRAINING_CENTER.name} className="link" />
           </div>
         </Popup>
       </Marker>

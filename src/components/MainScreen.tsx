@@ -15,6 +15,8 @@ import AccountPanel from './AccountPanel'
 import MembersPage from './MembersPage'
 import GeoHelp from './GeoHelp'
 import BasemapButton from './BasemapButton'
+import DrawToolbar from './DrawToolbar'
+import { useDrawings } from '../hooks/useDrawings'
 import { fetchPendingCount } from '../lib/api'
 import { Toast, useToast } from './Toast'
 
@@ -66,6 +68,10 @@ export default function MainScreen({ session, role }: Props) {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [draftPos, setDraftPos] = useState<DraftPos | null>(null)
   const [followGps, setFollowGps] = useState(false)
+
+  // Mode stylo : carte bloquée, dessin au doigt (dessins gardés sur l'appareil).
+  const [drawing, setDrawing] = useState(false)
+  const drawings = useDrawings()
 
   const pendingLocate = useRef(false)
   const draftCentered = useRef(false)
@@ -151,6 +157,7 @@ export default function MainScreen({ session, role }: Props) {
   }
 
   function startCreate() {
+    setDrawing(false)
     setSelectedId(null)
     setView('map')
     setPanel(null)
@@ -163,6 +170,7 @@ export default function MainScreen({ session, role }: Props) {
   }
 
   function startEdit(spot: Spot) {
+    setDrawing(false)
     setDraft({ mode: 'edit', spot })
     setDraftPos({ lat: spot.lat, lng: spot.lng, accuracy: spot.accuracy_m })
     setFollowGps(false)
@@ -187,6 +195,7 @@ export default function MainScreen({ session, role }: Props) {
   }
 
   function selectSpot(id: string, fly = false) {
+    setDrawing(false)
     if (draft) return
     setSelectedId(id)
     const s = spots.find((x) => x.id === id)
@@ -273,6 +282,10 @@ export default function MainScreen({ session, role }: Props) {
               onDraftMove={moveDraft}
               onMapClick={draft ? moveDraft : () => setSelectedId(null)}
               onReady={(m) => (mapRef.current = m)}
+              drawing={drawing}
+              strokes={drawings.strokes}
+              drawColor={drawings.color}
+              onStroke={drawings.add}
             />
 
             {view === 'list' && (
@@ -291,11 +304,34 @@ export default function MainScreen({ session, role }: Props) {
 
             {view === 'map' && (
               <>
+                {!draft && (
+                  <button
+                    className={`fab pen ${drawing ? 'on' : ''}`}
+                    onClick={() => {
+                      setSelectedId(null)
+                      setDrawing((d) => !d)
+                    }}
+                    aria-label={drawing ? 'Quitter le mode dessin' : 'Dessiner sur la carte'}
+                    aria-pressed={drawing}
+                  >
+                    ✏️
+                  </button>
+                )}
                 <BasemapButton value={prefs.basemap} onChange={(basemap) => setPrefs({ ...prefs, basemap })} />
                 <button className={`fab locate ${geo.active ? 'on' : ''}`} onClick={locate} aria-label="Me localiser">
                   ◎
                 </button>
-                {!draft && !selected && (
+                {drawing && (
+                  <DrawToolbar
+                    color={drawings.color}
+                    onColor={drawings.setColor}
+                    canUndo={drawings.strokes.length > 0}
+                    onUndo={drawings.undo}
+                    onClear={drawings.clear}
+                    onDone={() => setDrawing(false)}
+                  />
+                )}
+                {!draft && !selected && !drawing && (
                   <button className="fab add" onClick={startCreate}>
                     <span aria-hidden>＋</span> Ajouter un lieu
                   </button>

@@ -182,6 +182,9 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
 }
 .fab.locate { right: 12px; bottom: calc(84px + var(--safe-bottom)); width: 50px; height: 50px; border-radius: 50%; background: #fff; font-size: 1.5rem; color: var(--muted); }
 .fab.locate.on { color: var(--primary); }
+/* Bouton stylo (mode dessin), à gauche du bouton « Vue » */
+.fab.pen { right: 132px; bottom: calc(84px + var(--safe-bottom)); width: 50px; height: 50px; border-radius: 50%; background: #fff; font-size: 1.35rem; }
+.fab.pen.on { background: var(--primary); box-shadow: 0 0 0 3px #bfdbfe, var(--shadow); }
 /* Bouton Satellite / Plan, à gauche du bouton de position */
 .basemap-ctl { position: absolute; z-index: 600; right: 72px; bottom: calc(84px + var(--safe-bottom)); }
 .fab.basemap {
@@ -419,3 +422,40 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
 .geo-help ol { margin: 0.3rem 0 0.6rem; padding-left: 1.3rem; line-height: 1.5; }
 .geo-help li { margin: 0.2rem 0; }
 .geo-help h3 { margin: 0.8rem 0 0.2rem; }
+
+/* ---------- Choix de l'appli d'itinéraire ---------- */
+.dir-dest { margin: 0.15rem 0 0; }
+.dir-apps { display: grid; gap: 0.5rem; margin: 0.9rem 0 0.7rem; }
+.dir-apps a {
+  display: flex; align-items: center; gap: 0.8rem; padding: 0.85rem 1rem; border: 1.5px solid var(--line);
+  border-radius: 12px; font-size: 1.05rem; font-weight: 600; color: var(--ink); text-decoration: none; background: #fff;
+}
+.dir-apps a:active { background: var(--surface); }
+.dir-apps a span { font-size: 1.4rem; }
+.center-popup .link { font-weight: 700; margin-top: 0.2rem; text-align: left; padding: 0; }
+
+/* ---------- Mode dessin ---------- */
+.map.drawing { touch-action: none; cursor: crosshair; }
+.map.drawing .leaflet-marker-pane, .map.drawing .leaflet-popup-pane, .map.drawing .leaflet-shadow-pane { pointer-events: none; }
+.draw-hint {
+  position: absolute; z-index: 600; top: 10px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+  background: rgba(15, 23, 42, 0.82); color: #fff; font-size: 0.85rem; font-weight: 600; padding: 0.4rem 0.8rem; border-radius: 999px;
+  pointer-events: none;
+}
+.draw-bar {
+  position: absolute; z-index: 600; left: 50%; transform: translateX(-50%); bottom: calc(14px + var(--safe-bottom));
+  display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem; background: #fff; border-radius: 999px; box-shadow: var(--shadow);
+  max-width: calc(100% - 24px);
+}
+.draw-colors { display: flex; gap: 0.3rem; padding: 0 0.2rem; }
+.draw-colors button {
+  width: 30px; height: 30px; border-radius: 50%; border: 2px solid #cbd5e1; cursor: pointer; padding: 0; flex: none;
+}
+.draw-colors button.on { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ink); border-color: transparent; }
+.draw-tool {
+  width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--surface); font-size: 1.15rem; cursor: pointer; flex: none;
+}
+.draw-tool:disabled { opacity: 0.35; cursor: default; }
+.draw-done {
+  height: 40px; padding: 0 1rem; border: 0; border-radius: 999px; background: var(--primary); color: #fff; font-weight: 700; cursor: pointer; flex: none;
+}

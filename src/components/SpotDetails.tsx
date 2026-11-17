@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { getCategory } from '../lib/categories'
 import { deletePhoto, deleteSpot, uploadPhotos } from '../lib/api'
-import { directionsUrl, distanceMeters, formatCoords, formatDistance } from '../lib/geo'
+import { distanceMeters, formatCoords, formatDistance } from '../lib/geo'
+import DirectionsButton from './DirectionsButton'
 import { frError, relativeDate } from '../lib/format'
 import { usePhotoUrls } from '../hooks/usePhotoUrls'
 import type { GeoPos, Photo, Spot } from '../lib/types'
@@ -108,9 +109,7 @@ export default function SpotDetails({ spot, userId, isAdmin, canEdit, userPos, o
       </p>
 
       <div className="sheet-actions wrap">
-        <a className="btn primary" href={directionsUrl(spot)} target="_blank" rel="noopener noreferrer">
-          🧭 Itinéraire
-        </a>
+        <DirectionsButton to={spot} name={spot.title} />
         <button className="btn" onClick={share}>
           📤 Partager
         </button>
