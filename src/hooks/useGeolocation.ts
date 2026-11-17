@@ -10,6 +10,7 @@ export function useGeolocation() {
   const [pos, setPos] = useState<GeoPos | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [active, setActive] = useState(false)
+  const [denied, setDenied] = useState(false)
   const watchId = useRef<number | null>(null)
 
   const stop = useCallback(() => {
@@ -26,6 +27,7 @@ export function useGeolocation() {
     }
     setActive(true)
     setError(null)
+    setDenied(false)
     watchId.current = navigator.geolocation.watchPosition(
       (p) => {
         setPos({ lat: p.coords.latitude, lng: p.coords.longitude, accuracy: p.coords.accuracy, ts: p.timestamp })
@@ -33,7 +35,10 @@ export function useGeolocation() {
       },
       (err) => {
         setError(geoErrorMessage(err))
-        if (err.code === err.PERMISSION_DENIED) stop()
+        if (err.code === err.PERMISSION_DENIED) {
+          setDenied(true)
+          stop()
+        }
       },
       { enableHighAccuracy: true, maximumAge: 3000, timeout: 20000 },
     )
@@ -41,5 +46,5 @@ export function useGeolocation() {
 
   useEffect(() => stop, [stop])
 
-  return { pos, error, active, start, clearError: () => setError(null) }
+  return { pos, error, active, denied, start, clearError: () => setError(null), dismissDenied: () => setDenied(false) }
 }

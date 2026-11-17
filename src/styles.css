@@ -395,3 +395,8 @@ legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.4rem; padding: 0
   .person-actions .btn, .person-actions .icon-btn { flex: 0 0 auto; }
   .session-row .person-actions { justify-content: flex-end; }
 }
+
+/* ---------- Aide localisation ---------- */
+.geo-help ol { margin: 0.3rem 0 0.6rem; padding-left: 1.3rem; line-height: 1.5; }
+.geo-help li { margin: 0.2rem 0; }
+.geo-help h3 { margin: 0.8rem 0 0.2rem; }

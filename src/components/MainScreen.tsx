@@ -12,6 +12,7 @@ import SpotForm from './SpotForm'
 import SpotList from './SpotList'
 import AccountPanel from './AccountPanel'
 import MembersPage from './MembersPage'
+import GeoHelp from './GeoHelp'
 import { fetchPendingCount } from '../lib/api'
 import { Toast, useToast } from './Toast'
 
@@ -131,8 +132,9 @@ export default function MainScreen({ session, role }: Props) {
   }, [draft, followGps, geo.pos, flyTo])
 
   useEffect(() => {
-    if (geo.error) showToast(geo.error, 'error')
-  }, [geo.error, showToast])
+    // Refus d'autorisation : la fenêtre d'aide GeoHelp remplace le simple message.
+    if (geo.error && !geo.denied) showToast(geo.error, 'error')
+  }, [geo.error, geo.denied, showToast])
 
   function locate() {
     geo.start()
@@ -353,6 +355,16 @@ export default function MainScreen({ session, role }: Props) {
           }}
           toast={showToast}
           myEmail={session.user.email ?? ''}
+        />
+      )}
+
+      {geo.denied && (
+        <GeoHelp
+          onClose={geo.dismissDenied}
+          onRetry={() => {
+            geo.dismissDenied()
+            geo.start()
+          }}
         />
       )}
 

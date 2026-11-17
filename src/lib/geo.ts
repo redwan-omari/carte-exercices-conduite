@@ -33,7 +33,7 @@ export function formatDistance(m: number): string {
 export function geoErrorMessage(err: GeolocationPositionError): string {
   switch (err.code) {
     case err.PERMISSION_DENIED:
-      return 'Localisation refusée. Autorisez-la dans les réglages du navigateur pour ce site.'
+      return 'Localisation bloquée par le téléphone.'
     case err.POSITION_UNAVAILABLE:
       return 'Position GPS indisponible. Vérifiez que la localisation du téléphone est activée.'
     case err.TIMEOUT:
